@@ -314,6 +314,8 @@ body {
 .tool-logo.flexsim { background: linear-gradient(135deg,#1a3a00,#3a7500); color: #a0e040; }
 .tool-logo.arena { background: linear-gradient(135deg,#5c0020,#a00038); color: #ffb0c0; }
 .tool-logo.ai { background: linear-gradient(135deg,#003040,#005a70); color: var(--accent); }
+.tool-logo.anylogic { background: linear-gradient(135deg,#1a1a2e,#e94560); color: #fff; }
+.tool-logo.anylogistix { background: linear-gradient(135deg,#0f3460,#533483); color: #e0d7ff; }
 .tool-card h4 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
 .tool-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.55; }
 
