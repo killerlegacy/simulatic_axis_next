@@ -75,10 +75,12 @@ export function Tools() {
         <h2 className="section-title centered">Powered by<br /><em>Industry-Leading Platforms</em></h2>
         <div className="tools-grid">
           {[
-            { cls: 'simio',   label: 'Simio',   title: 'Simio',          desc: 'Object-based 3D simulation for complex manufacturing and logistics systems.' },
-            { cls: 'flexsim', label: 'FlexSim', title: 'FlexSim',        desc: 'High-fidelity 3D simulation for warehouses, hospitals, and industrial systems.' },
-            { cls: 'arena',   label: 'Arena',   title: 'Arena',          desc: 'Process-driven discrete event simulation for queuing and service operations.' },
-            { cls: 'ai',      label: 'AI/ML',   title: 'AI & Data Science', desc: 'Machine learning integration for predictive modeling and intelligent optimization.' },
+            { cls: 'simio',       label: 'Simio',     title: 'Simio',            desc: 'Object-based 3D simulation for complex manufacturing and logistics systems.' },
+            { cls: 'flexsim',     label: 'FlexSim',   title: 'FlexSim',          desc: 'High-fidelity 3D simulation for warehouses, hospitals, and industrial systems.' },
+            { cls: 'arena',       label: 'Arena',     title: 'Arena',            desc: 'Process-driven discrete event simulation for queuing and service operations.' },
+            { cls: 'anylogic',    label: 'AnyLogic',  title: 'AnyLogic',         desc: 'Multi-method simulation platform combining agent-based, discrete event, and system dynamics modeling.' },
+            { cls: 'anylogistix', label: 'ALX',       title: 'AnyLogistix',      desc: 'Supply chain design and optimization tool for network analysis, risk assessment, and logistics planning.' },
+            { cls: 'ai',          label: 'AI/ML',     title: 'AI & Data Science', desc: 'Machine learning integration for predictive modeling and intelligent optimization.' },
           ].map(t => (
             <div className="tool-card" key={t.cls}>
               <div className={`tool-logo ${t.cls}`}>{t.label}</div>
@@ -217,7 +219,7 @@ export function Footer() {
           </div>
           <div className="footer-links">
             <h5>Platforms</h5>
-            <ul>{['Simio','FlexSim','Arena','AI & ML Integration'].map(p => <li key={p}><a href="#tools">{p}</a></li>)}</ul>
+            <ul>{['Simio','FlexSim','Arena','AnyLogic','AnyLogistix','AI & ML Integration'].map(p => <li key={p}><a href="#tools">{p}</a></li>)}</ul>
           </div>
         </div>
         <div className="footer-bottom">
