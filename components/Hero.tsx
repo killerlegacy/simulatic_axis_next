@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef } from 'react'
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [animatedStats, setAnimatedStats] = useState(() => heroStats.map(() => 0))
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -51,6 +52,25 @@ export default function Hero() {
     resize(); draw()
     window.addEventListener('resize', resize)
     return () => { cancelAnimationFrame(animFrame); window.removeEventListener('resize', resize) }
+  }, [])
+
+  useEffect(() => {
+    const durationMs = 1200
+    const start = performance.now()
+
+    let frameId = 0
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / durationMs, 1)
+      setAnimatedStats(heroStats.map(stat => Math.round(stat.value * progress)))
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate)
+      }
+    }
+
+    frameId = requestAnimationFrame(animate)
+
+    return () => cancelAnimationFrame(frameId)
   }, [])
 
   const scrollTo = (id: string) => {
