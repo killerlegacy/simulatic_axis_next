@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -83,13 +83,13 @@ export default function Hero() {
         </div>
         <div className="hero-stats">
           {[['50+','Projects Delivered'],['8+','Years Experience'],['18','Expert Engineers'],['3','Countries Active']].map(([num, label], i, arr) => (
-            <>
+            <Fragment key={num}>
               <div className="stat" key={num}>
                 <span className="stat-num">{num}</span>
                 <span className="stat-label">{label}</span>
               </div>
-              {i < arr.length - 1 && <div className="stat-div" key={`d${i}`} />}
-            </>
+              {i < arr.length - 1 && <div className="stat-div" />}
+            </Fragment>
           ))}
         </div>
       </div>
