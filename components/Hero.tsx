@@ -4,8 +4,8 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 const HERO_STATS = [
   { value: 50, suffix: '+', label: 'Projects Delivered' },
   { value: 8, suffix: '+', label: 'Years Experience' },
-  { value: 18, suffix: '', label: 'Expert Engineers' },
-  { value: 3, suffix: '', label: 'Countries Active' },
+  { value: 18, suffix: '+', label: 'Expert Engineers' },
+  { value: 10, suffix: '+', label: 'Countries Active' },
 ]
 
 export default function Hero() {
