@@ -1,8 +1,18 @@
 'use client'
-import { Fragment, useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
+
+const HERO_STATS = [
+  { value: 50, suffix: '+', label: 'Projects Delivered' },
+  { value: 8, suffix: '+', label: 'Years Experience' },
+  { value: 18, suffix: '', label: 'Expert Engineers' },
+  { value: 3, suffix: '', label: 'Countries Active' },
+]
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+  const hasAnimatedStats = useRef(false)
+  const [displayedStats, setDisplayedStats] = useState<number[]>(() => HERO_STATS.map(() => 0))
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -53,6 +63,47 @@ export default function Hero() {
     return () => { cancelAnimationFrame(animFrame); window.removeEventListener('resize', resize) }
   }, [])
 
+  useEffect(() => {
+    const container = statsRef.current
+    if (!container) return
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      setDisplayedStats(HERO_STATS.map(s => s.value))
+      return
+    }
+
+    let animFrame = 0
+    const animateStats = () => {
+      const duration = 1200
+      const start = performance.now()
+      const step = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        setDisplayedStats(HERO_STATS.map(s => Math.round(s.value * eased)))
+        if (progress < 1) animFrame = requestAnimationFrame(step)
+      }
+      animFrame = requestAnimationFrame(step)
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting && !hasAnimatedStats.current) {
+          hasAnimatedStats.current = true
+          animateStats()
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.35 }
+    )
+
+    observer.observe(container)
+    return () => {
+      observer.disconnect()
+      if (animFrame) cancelAnimationFrame(animFrame)
+    }
+  }, [])
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: 'smooth' })
@@ -81,14 +132,14 @@ export default function Hero() {
           <button className="btn-primary" onClick={() => scrollTo('projects')}>View Our Work</button>
           <button className="btn-outline" onClick={() => scrollTo('contact')}>Start a Project</button>
         </div>
-        <div className="hero-stats">
-          {[['50+','Projects Delivered'],['8+','Years Experience'],['18','Expert Engineers'],['3','Countries Active']].map(([num, label], i, arr) => (
-            <Fragment key={num}>
-              <div className="stat" key={num}>
-                <span className="stat-num">{num}</span>
-                <span className="stat-label">{label}</span>
+        <div className="hero-stats" ref={statsRef}>
+          {HERO_STATS.map((stat, i) => (
+            <Fragment key={stat.label}>
+              <div className="stat">
+                <span className="stat-num">{displayedStats[i]}{stat.suffix}</span>
+                <span className="stat-label">{stat.label}</span>
               </div>
-              {i < arr.length - 1 && <div className="stat-div" />}
+              {i < HERO_STATS.length - 1 && <div className="stat-div" />}
             </Fragment>
           ))}
         </div>
