@@ -1,8 +1,22 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
+
+type HeroStat = {
+  value: number
+  suffix?: string
+  label: string
+}
+
+const heroStats: HeroStat[] = [
+  { value: 50, suffix: '+', label: 'Projects Delivered' },
+  { value: 8, suffix: '+', label: 'Years Experience' },
+  { value: 18, label: 'Expert Engineers' },
+  { value: 3, label: 'Countries Active' },
+]
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [animatedStats, setAnimatedStats] = useState(() => heroStats.map(() => 0))
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -53,6 +67,25 @@ export default function Hero() {
     return () => { cancelAnimationFrame(animFrame); window.removeEventListener('resize', resize) }
   }, [])
 
+  useEffect(() => {
+    const durationMs = 1200
+    const start = performance.now()
+
+    let frameId = 0
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / durationMs, 1)
+      setAnimatedStats(heroStats.map(stat => Math.round(stat.value * progress)))
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate)
+      }
+    }
+
+    frameId = requestAnimationFrame(animate)
+
+    return () => cancelAnimationFrame(frameId)
+  }, [])
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: 'smooth' })
@@ -82,14 +115,14 @@ export default function Hero() {
           <button className="btn-outline" onClick={() => scrollTo('contact')}>Start a Project</button>
         </div>
         <div className="hero-stats">
-          {[['50+','Projects Delivered'],['8+','Years Experience'],['18','Expert Engineers'],['3','Countries Active']].map(([num, label], i, arr) => (
-            <>
-              <div className="stat" key={num}>
-                <span className="stat-num">{num}</span>
-                <span className="stat-label">{label}</span>
+          {heroStats.map((stat, i) => (
+            <Fragment key={stat.label}>
+              <div className="stat">
+                <span className="stat-num">{animatedStats[i]}{stat.suffix ?? ''}</span>
+                <span className="stat-label">{stat.label}</span>
               </div>
-              {i < arr.length - 1 && <div className="stat-div" key={`d${i}`} />}
-            </>
+              {i < heroStats.length - 1 && <div className="stat-div" />}
+            </Fragment>
           ))}
         </div>
       </div>
