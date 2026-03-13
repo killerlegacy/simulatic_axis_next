@@ -1,18 +1,5 @@
 'use client'
-import { Fragment, useEffect, useRef, useState } from 'react'
-
-type HeroStat = {
-  value: number
-  suffix?: string
-  label: string
-}
-
-const heroStats: HeroStat[] = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 8, suffix: '+', label: 'Years Experience' },
-  { value: 18, label: 'Expert Engineers' },
-  { value: 3, label: 'Countries Active' },
-]
+import { Fragment, useEffect, useRef } from 'react'
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -115,13 +102,13 @@ export default function Hero() {
           <button className="btn-outline" onClick={() => scrollTo('contact')}>Start a Project</button>
         </div>
         <div className="hero-stats">
-          {heroStats.map((stat, i) => (
-            <Fragment key={stat.label}>
-              <div className="stat">
-                <span className="stat-num">{animatedStats[i]}{stat.suffix ?? ''}</span>
-                <span className="stat-label">{stat.label}</span>
+          {[['50+','Projects Delivered'],['8+','Years Experience'],['18','Expert Engineers'],['3','Countries Active']].map(([num, label], i, arr) => (
+            <Fragment key={num}>
+              <div className="stat" key={num}>
+                <span className="stat-num">{num}</span>
+                <span className="stat-label">{label}</span>
               </div>
-              {i < heroStats.length - 1 && <div className="stat-div" />}
+              {i < arr.length - 1 && <div className="stat-div" />}
             </Fragment>
           ))}
         </div>
